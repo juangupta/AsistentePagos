@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
 namespace AsistentePagos.Core.Models
 {
     public class InvoiceModel
+
     {
         public string merchantId { get; set; }
         public int amount { get; set; }
