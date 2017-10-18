@@ -9,7 +9,7 @@ using Android.Content;
 
 namespace AsistentePagos
 {
-    [Activity(Label = "Asistente de Pagos", MainLauncher = true)]
+    [Activity(Label = "Asistente de Pagos")]
     public class MainActivity : Activity, TextToSpeech.IOnInitListener
     {
         private TextToSpeech tts;
@@ -35,7 +35,7 @@ namespace AsistentePagos
             hablar(text);
             while (tts.IsSpeaking)
             {
-                //TO DO
+                //TODO
             }
             escuchar();
 
