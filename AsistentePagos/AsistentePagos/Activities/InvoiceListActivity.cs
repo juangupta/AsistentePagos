@@ -12,11 +12,12 @@ using Android.Widget;
 using AsistentePagos.Core.Models;
 using Felipecsl.GifImageViewLibrary;
 using System.Net.Http;
-using Android.Graphics.Drawables;
+//using Android.Graphics.Drawables;
 using Android.Graphics;
 using Java.IO;
 using System.IO;
 using Android.Webkit;
+using AsistentePagos.Core.Service;
 
 namespace AsistentePagos.Activities
 {
@@ -27,6 +28,7 @@ namespace AsistentePagos.Activities
         ListView invoiceListView;
         GifImageView gif;
         WebView webview;
+        ApiService apiService;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -51,17 +53,24 @@ namespace AsistentePagos.Activities
                     dueDate = new DateTime(2017,11,30)
                 }
             };
-            
+            apiService = new ApiService();
             LoadAnimatedGif();
 
-            invoiceListView.Adapter = new InvoiceListItemAdapter(this, invoices);
+            GetInvoices();
+        }
+
+        async void GetInvoices()
+        {
+            var invoicesResult = await apiService.Get<InvoiceModel>("https://api.us.apiconnect.ibmcloud.com/",
+                "/playgroundbluemix-dev/hackathon/api/", "invoices", "yacalder", "vinula");
+            invoiceListView.Adapter = new InvoiceListItemAdapter(this, (List<InvoiceModel>)invoicesResult.Result);
         }
 
         void LoadAnimatedGif()
         {
             //webview = view.FindViewById<WebView>(Resource.Id.webView1);
             // expects to find the 'loading_icon_small.gif' file in the 'root' of the assets folder, compiled as AndroidAsset.
-            webview.LoadUrl(string.Format("file:///android_asset/gato_developer.gif"));
+            webview.LoadUrl(string.Format("file:///android_asset/merlin.webp"));
             // this makes it transparent so you can load it over a background
             webview.SetBackgroundColor(new Color(0, 0, 0, 0));
             webview.SetLayerType(LayerType.Software, null);
