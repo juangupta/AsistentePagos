@@ -69,6 +69,9 @@ namespace AsistentePagos
 		public partial class Id
 		{
 			
+			// aapt resource value: 0x7f05000f
+			public const int BtnAceptar = 2131034127;
+			
 			// aapt resource value: 0x7f050001
 			public const int imageViewItem = 2131034113;
 			
@@ -93,6 +96,9 @@ namespace AsistentePagos
 			// aapt resource value: 0x7f050008
 			public const int logo_pagosapp = 2131034120;
 			
+			// aapt resource value: 0x7f05000e
+			public const int passwordInput = 2131034126;
+			
 			// aapt resource value: 0x7f050003
 			public const int textViewDescriptionItem = 2131034115;
 			
@@ -104,6 +110,9 @@ namespace AsistentePagos
 			
 			// aapt resource value: 0x7f050007
 			public const int textViewTitle = 2131034119;
+			
+			// aapt resource value: 0x7f05000d
+			public const int usernameInput = 2131034125;
 			
 			// aapt resource value: 0x7f05000b
 			public const int webView1 = 2131034123;
@@ -128,7 +137,10 @@ namespace AsistentePagos
 			public const int InvoicesList = 2130903041;
 			
 			// aapt resource value: 0x7f030002
-			public const int Main = 2130903042;
+			public const int LoginUser = 2130903042;
+			
+			// aapt resource value: 0x7f030003
+			public const int Main = 2130903043;
 			
 			static Layout()
 			{

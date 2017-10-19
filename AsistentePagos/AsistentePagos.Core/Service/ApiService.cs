@@ -61,6 +61,48 @@ namespace AsistentePagos.Core.Service
             }
         }
 
+        public async Task<Response> Get<T>(string urlBase, string servicePrefix, string controller, string filter)
+        {
+            try
+            {
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Add("x-ibm-client-id", "9de78f88-553c-461b-bfd3-d69d498d3890");
+                client.DefaultRequestHeaders.Add("x-ibm-client-secret", "I7kP2yP6pA6oC6hL8oR3oR3fT5aR8rT2mN0rA7vJ7jJ5uY7pS2");
+
+                client.BaseAddress = new Uri(urlBase);
+                var url = string.Format("{0}{1}", servicePrefix, controller+filter);
+                var response = await client.GetAsync(url);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Response
+                    {
+                        IsSuccess = false,
+                        Message = response.StatusCode.ToString(),
+                    };
+                }
+
+                var result = await response.Content.ReadAsStringAsync();
+                var model = JsonConvert.DeserializeObject<List<T>>(result);
+                return new Response
+                {
+                    IsSuccess = true,
+                    Message = "Ok",
+                    Result = model,
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = ex.Message,
+                };
+            }
+        }
+
+
+
         public static string Base64Encode(string plainText)
         {
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
