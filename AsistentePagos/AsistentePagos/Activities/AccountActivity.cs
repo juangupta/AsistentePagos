@@ -194,6 +194,7 @@ namespace AsistentePagos.Activities
                             textInput = textInput.Substring(0, 3);
                             Account acountSelected = FindAccountFromSpeech(textInput);
                         }
+                        LaunchActivity();
                             
                     }
                     else
@@ -203,6 +204,12 @@ namespace AsistentePagos.Activities
             }
 
             base.OnActivityResult(requestCode, resultVal, data);
+        }
+
+        private void LaunchActivity()
+        {
+            Intent intent = new Intent(this, typeof(HomeActivity));
+            StartActivity(intent);
         }
         #endregion
 

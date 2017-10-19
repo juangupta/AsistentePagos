@@ -48,9 +48,7 @@ namespace AsistentePagos.Activities
             GetUsers();
             //titleLabel.Text = "Aqui vamos";
             // ObtenerToken();
-            var intent = new Intent(this, typeof(VoiceActivity));
-            intent.PutExtra("userName", user.Name);
-            StartActivity(intent);
+            
 
 
         }
@@ -73,9 +71,12 @@ namespace AsistentePagos.Activities
 
             await database.insertUpdateData(user, dbpath);
 
+            var intent = new Intent(this, typeof(VoiceActivity));
+            intent.PutExtra("userName", user.Name);
+            StartActivity(intent);
 
-            /*var intent = new Intent(this, typeof(ProtectedActivity));
-            StartActivity(intent);*/
+            //var intent = new Intent(this, typeof(ProtectedActivity));
+            //StartActivity(intent);
 
 
             User user1 = new User();
