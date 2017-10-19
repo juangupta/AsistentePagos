@@ -25,6 +25,7 @@ namespace AsistentePagos.Activities
         Response usersResult;
         List<User> users;
         SqLiteHelper database;
+        User user;
         string dbpath;
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -47,8 +48,9 @@ namespace AsistentePagos.Activities
             GetUsers();
             //titleLabel.Text = "Aqui vamos";
             // ObtenerToken();
-            //var intent = new Intent(this, typeof(ProtectedActivity));
-            //StartActivity(intent);
+            var intent = new Intent(this, typeof(VoiceActivity));
+            intent.PutExtra("userName", user.Name);
+            StartActivity(intent);
 
 
         }
@@ -61,7 +63,7 @@ namespace AsistentePagos.Activities
 
             users = (List<User>)usersResult.Result;
 
-            User user = users[0];
+            user = users[0];
             user.PassUser = passwordInput.Text;
 
             database = new SqLiteHelper();

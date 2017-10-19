@@ -27,7 +27,7 @@ using System.Threading.Tasks;
 
 namespace AsistentePagos.Activities
 {
-    [Activity(Label = "Asistente de Pagos", MainLauncher = true)]
+    [Activity(Label = "Asistente de Pagos", MainLauncher = false)]
     public class HomeActivity : Activity, TextToSpeech.IOnInitListener
     {
         private string textInput;
