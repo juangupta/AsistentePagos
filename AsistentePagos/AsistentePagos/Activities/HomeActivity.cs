@@ -108,7 +108,7 @@ namespace AsistentePagos.Activities
             Speech();
         }
 
-        public void Speech()
+        public async void Speech()
         {
             
             // Consultamos el nombre de la DB
@@ -118,7 +118,7 @@ namespace AsistentePagos.Activities
             user.Name = "Yefry";
             user.DocumentId = "123445";
 
-            database.insertUpdateData(user, dbpath);
+            await database.insertUpdateData(user, dbpath);
             //var response = database.FindUser(dbpath);
             var response = database.FindUser(dbpath);
             //Toast.MakeText(this, response.Name, ToastLength.Long);
@@ -219,7 +219,8 @@ namespace AsistentePagos.Activities
         void invokeInvoices()
         {
             // Llamamos el activity InvoiceListActivity
-            if (string.Equals(textInput, "Si", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(textInput, "Sí", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(textInput, "Sí", StringComparison.OrdinalIgnoreCase))
             {
                 Intent intent = new Intent(this, typeof(InvoiceListActivity));
                 StartActivity(intent);
