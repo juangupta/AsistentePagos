@@ -69,6 +69,7 @@
     <Compile Include="Activities\AccountActivity.cs" />
     <Compile Include="Activities\HomeActivity.cs" />
     <Compile Include="Activities\InvoiceListActivity.cs" />
+    <Compile Include="Activities\LoginActivity.cs" />
     <Compile Include="Adapter\AccountListAdapter.cs" />
     <Compile Include="Adapter\InvoiceListItemAdapter.cs" />
     <Compile Include="Activities\PaymentActivity.cs" />
@@ -87,6 +88,9 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\InvoiceListItem.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\LoginUser.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\Accounts.axml">
