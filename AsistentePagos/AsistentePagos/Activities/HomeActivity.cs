@@ -23,23 +23,19 @@ using Android.Speech.Tts;
 using Android.Speech;
 using Android.Content;
 using AsistentePagos.Core.Utils;
+using System.Threading.Tasks;
 
 namespace AsistentePagos.Activities
 {
-    [Activity(Label = "InvoiceListActivity")]
-    public class InvoiceListActivity : Activity, TextToSpeech.IOnInitListener
+    [Activity(Label = "Asistente de Pagos", MainLauncher = true)]
+    public class HomeActivity : Activity, TextToSpeech.IOnInitListener
     {
-        ImageView avatarImageView;
-        ListView invoiceListView;
-        GifImageView gif;
-        WebView webview;
-        ApiService apiService;
-        Response invoicesResult;
-        TextToSpeech tts;
-        List<InvoiceModel> invoices;
         private string textInput;
         private bool isRecording;
         private readonly int VOICE = 10;
+        GifImageView gif;
+        WebView webview;
+        TextToSpeech tts;
         SqLiteHelper database;
         string dbpath;
 
@@ -47,36 +43,40 @@ namespace AsistentePagos.Activities
         {
             base.OnCreate(savedInstanceState);
 
-            SetContentView(Resource.Layout.InvoicesList);
+            // Create your application here
+            // Set our view from the "home" layout resource
+            SetContentView(Resource.Layout.Home);
             InitComponents();
-            apiService = new ApiService();
-            LoadAnimatedGif();
 
-            GetInvoices();
+            // Cargamos el avatar
+            LoadAnimatedGif();
 
             database = new SqLiteHelper();
             dbpath = System.IO.Path.Combine(
-            System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal),"ormdemo.db3");
+            System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "ormdemo.db3");
             database.createDatabase(dbpath);
+
+            ImageView imageMicrophone = FindViewById<ImageView>(Resource.Id.imageViewMicrophone);
+            imageMicrophone.Click += delegate
+            {
+                Hablar();
+            };
+            // Empezamos a saludar al usuario
+            Hablar();
         }
 
-        async void GetInvoices()
+        public void Hablar()
         {
-            invoicesResult = await apiService.Get<InvoiceModel>("https://api.us.apiconnect.ibmcloud.com/",
-                "/playgroundbluemix-dev/hackathon/api/", "invoices", "yacalder", "vinula");
-            invoices = (List<InvoiceModel>)invoicesResult.Result;
-            invoiceListView.Adapter = new InvoiceListItemAdapter(this, invoices);
+            //Task.Delay(10).Wait();
             tts = new TextToSpeech(this, this);
+        }
 
-            User user = new User();
-            user.Id = "1";
-            user.Name = "Yefry";
-            user.DocumentId = "123445";
-
-            //await database.insertUpdateData(user, dbpath);
-            //var response = database.FindUser(dbpath);
-            //Toast.MakeText(this, response.Name, ToastLength.Long);
-
+        private void InitComponents()
+        {
+            //avatarImageView = FindViewById<ImageView>(Resource.Id.imageViewAvatar);
+            //invoiceListView = FindViewById<ListView>(Resource.Id.listViewInvoices);
+            //gif = FindViewById<GifImageView>(Resource.Id.gifImageView);
+            webview = FindViewById<WebView>(Resource.Id.webView1);
         }
 
         void LoadAnimatedGif()
@@ -87,14 +87,6 @@ namespace AsistentePagos.Activities
             // this makes it transparent so you can load it over a background
             webview.SetBackgroundColor(new Color(0, 0, 0, 0));
             webview.SetLayerType(LayerType.Software, null);
-        }
-
-        private void InitComponents()
-        {
-            //avatarImageView = FindViewById<ImageView>(Resource.Id.imageViewAvatar);
-            invoiceListView = FindViewById<ListView>(Resource.Id.listViewInvoices);
-            //gif = FindViewById<GifImageView>(Resource.Id.gifImageView);
-            webview = FindViewById<WebView>(Resource.Id.webView1);
         }
 
         public void OnInit(OperationResult status)
@@ -114,26 +106,29 @@ namespace AsistentePagos.Activities
                 Toast.MakeText(this, "Error al activar TTS", ToastLength.Long).Show();
             }
             Speech();
-
         }
 
         public void Speech()
         {
-            string userName = "Juan";
-            int invoicesCount = invoices.Count;
+            
+            // Consultamos el nombre de la DB
 
-            Speak("Hola" + userName + ", tienes " + invoicesCount + " facturas pendientes por pagar");
+            User user = new User();
+            user.Id = "1";
+            user.Name = "Yefry";
+            user.DocumentId = "123445";
 
-            for (var i = 0; i < invoicesCount; i++)
-            {
-                Speak(invoices[i].description + " de " + invoices[i].merchantName + " por valor de " + invoices[i].amount + " y debes pagar antes de " + invoices[i].dueDate.Month + " " +invoices[i].dueDate.Day + " " + invoices[i].dueDate.Year);
-            }
+            database.insertUpdateData(user, dbpath);
+            //var response = database.FindUser(dbpath);
+            var response = database.FindUser(dbpath);
+            //Toast.MakeText(this, response.Name, ToastLength.Long);
+            string userName = response.Name;
 
-            Speak("¿Cuál factura deseas pagar?");
+            // Saludamos al usuario
+            Speak("");
+            Speak("Hola" + userName + ", Bienvenido ha tu Asistente de Pagos, tienes facturas pendientes por pagar");
+            Speak("¿Quieres consultarlas?");
             Listen();
-            
-            
-
         }
 
         public void Speak(string text)
@@ -160,8 +155,6 @@ namespace AsistentePagos.Activities
                     //TODO
                 }
             }
-
-
         }
 
         public void Listen()
@@ -197,7 +190,6 @@ namespace AsistentePagos.Activities
                 voiceIntent.PutExtra(RecognizerIntent.ExtraLanguage, Java.Util.Locale.Default);
                 StartActivityForResult(voiceIntent, VOICE);
             }
-
         }
 
         protected override void OnActivityResult(int requestCode, Result resultVal, Intent data)
@@ -214,43 +206,24 @@ namespace AsistentePagos.Activities
                         // limit the output to 500 characters
                         if (textInput.Length > 500)
                             textInput = textInput.Substring(0, 500);
-                        invokeActivity();
-                        //hablar(textInput);
+                        // Consultamos las facturas
+                        invokeInvoices();
                     }
                     else
-                        textInput = "Disculpa Juan Gabriel, no te entendí";
-
+                        textInput = "Disculpa, no te entendí";
                 }
             }
-
             base.OnActivityResult(requestCode, resultVal, data);
         }
 
-        void invokeActivity()
+        void invokeInvoices()
         {
-            string invoiceId = "";
-            for (var i = 0; i < invoices.Count; i++)
+            // Llamamos el activity InvoiceListActivity
+            if (string.Equals(textInput, "Si", StringComparison.OrdinalIgnoreCase))
             {
-                if (string.Equals(textInput, invoices[i].description, StringComparison.OrdinalIgnoreCase))
-                {
-                    invoiceId = invoices[i].id;
-                    break;
-                }
-            }
-
-            if (!string.IsNullOrEmpty(invoiceId))
-            {
-                Intent intent = new Intent(this, typeof(MainActivity));
-                intent.PutExtra("invoiceId", invoiceId);
+                Intent intent = new Intent(this, typeof(InvoiceListActivity));
                 StartActivity(intent);
             }
-            else
-            {
-                Speak("No encuentro la factura que me indicas");
-                //Escuche o microfono
-            }
-            
         }
-
     }
 }
