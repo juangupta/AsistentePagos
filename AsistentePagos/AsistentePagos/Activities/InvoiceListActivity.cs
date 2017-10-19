@@ -276,7 +276,10 @@ namespace AsistentePagos.Activities
 
         async void confirmPayment()
         {
-            if (string.Equals(textInput, "si", StringComparison.OrdinalIgnoreCase) || string.Equals(textInput, "sí", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(textInput, "si", StringComparison.OrdinalIgnoreCase) || 
+                string.Equals(textInput, "sí", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(textInput, "de acuerdo", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(textInput, "continuar", StringComparison.OrdinalIgnoreCase))
             {
 
                 Payment payment = new Payment();

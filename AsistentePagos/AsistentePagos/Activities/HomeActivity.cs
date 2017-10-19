@@ -126,8 +126,8 @@ namespace AsistentePagos.Activities
 
             // Saludamos al usuario
             Speak("");
-            Speak("Hola" + userName + ", Bienvenido ha tu Asistente de Pagos, tienes facturas pendientes por pagar");
-            Speak("¿Quieres consultarlas?");
+            Speak("Hola" + userName + ", Bienvenido ha tu Asistente de Pagos, tienes facturas pendientes por pagar        ¿Quieres consultarlas?");
+            //Speak("¿Quieres consultarlas?");
             Listen();
         }
 
@@ -220,7 +220,9 @@ namespace AsistentePagos.Activities
         {
             // Llamamos el activity InvoiceListActivity
             if (string.Equals(textInput, "Sí", StringComparison.OrdinalIgnoreCase) ||
-                string.Equals(textInput, "Sí", StringComparison.OrdinalIgnoreCase))
+                string.Equals(textInput, "Sí", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(textInput, "de acuerdo", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(textInput, "continuar", StringComparison.OrdinalIgnoreCase))
             {
                 Intent intent = new Intent(this, typeof(InvoiceListActivity));
                 StartActivity(intent);
