@@ -76,10 +76,10 @@ namespace AsistentePagos
                         tts.Speak(text, QueueMode.Flush, null);
                     }
                 }
-                while (tts.IsSpeaking)
-                {
-                    //TODO
-                }
+                //while (tts.IsSpeaking)
+                //{
+                //    //TODO
+                //}
             }
 
 
