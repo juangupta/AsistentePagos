@@ -18,7 +18,7 @@ using AsistentePagos.Core.Utils;
 
 namespace AsistentePagos.Activities
 {
-    [Activity(Label = "InvoiceListActivity", MainLauncher = true)]
+    [Activity(Label = "InvoiceListActivity", MainLauncher = false)]
     public class InvoiceListActivity : Activity, TextToSpeech.IOnInitListener
     {
         ImageView avatarImageView;
