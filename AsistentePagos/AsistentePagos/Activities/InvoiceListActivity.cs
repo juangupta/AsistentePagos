@@ -80,7 +80,7 @@ namespace AsistentePagos.Activities
 
 
             //await database.insertUpdateData(user, dbpath);
-            //var response = database.FindUser(dbpath);
+            //user = database.FindUser(dbpath);
             //Toast.MakeText(this, response.Name, ToastLength.Long);
 
         }
@@ -89,7 +89,7 @@ namespace AsistentePagos.Activities
         {
             //webview = view.FindViewById<WebView>(Resource.Id.webView1);
             // expects to find the 'loading_icon_small.gif' file in the 'root' of the assets folder, compiled as AndroidAsset.
-            webview.LoadUrl(string.Format("file:///android_asset/merlin.webp"));
+            webview.LoadUrl(string.Format("file:///android_asset/sin_fondo_mujer.gif"));
             // this makes it transparent so you can load it over a background
             webview.SetBackgroundColor(new Color(0, 0, 0, 0));
             webview.SetLayerType(LayerType.Software, null);
@@ -260,14 +260,17 @@ namespace AsistentePagos.Activities
                 }
             }
 
+            if (string.IsNullOrEmpty(invoice.id))
+            {
+                Speak("Por favor repite el número de la factura");
+                Listen(VOICE);
+
+            }
+
             Speak("Vas a pagar la factura " + invoice.description + " de la empresa " + invoice.merchantName + " por un valor de" + invoice.amount + " desde tu cuenta llamada " + user.AccountName + " ¿Deseas continuar?");
             Listen(VOICE2);
 
-            if (string.IsNullOrEmpty(invoice.id))
-            {
-                Speak("No encuentro la factura que me indicas");
 
-            }
             
         }
 
