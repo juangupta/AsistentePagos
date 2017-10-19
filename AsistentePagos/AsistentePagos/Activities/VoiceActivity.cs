@@ -16,7 +16,7 @@ using Android.Widget;
 
 namespace AsistentePagos.Activities
 {
-    [Activity(Label = "VoiceActivity", MainLauncher = false)]
+    [Activity(Label = "VoiceActivity", MainLauncher = true)]
     public class VoiceActivity : Activity, TextToSpeech.IOnInitListener
 
     {
@@ -25,6 +25,7 @@ namespace AsistentePagos.Activities
         private readonly int VOICE1 = 10;
         private readonly int VOICE2 = 20;
         private string textInput;
+        string userName;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -98,7 +99,7 @@ namespace AsistentePagos.Activities
         public void Speech()
         {
             
-            string userName = "Anibal";
+            userName = "Anibal";
 
             string[] speaks = {" ", "Hola"+userName+"para autenticar repite las siguientes oraciones", "La vaca en la torre es de color rojo"};
 
@@ -187,6 +188,7 @@ namespace AsistentePagos.Activities
                             textInput = textInput.Substring(0, 30);
 
                         Speak("La validación de tu voz ha sido exitosamente");
+                        CallAccountActivity();
                     }
                     else
                         Speak("No se logro realizar tu validación de voz");
@@ -195,6 +197,13 @@ namespace AsistentePagos.Activities
             }
 
             base.OnActivityResult(requestCode, resultVal, data);
+        }
+
+        private void CallAccountActivity()
+        {
+            Intent intent = new Intent(this, typeof(AccountActivity));
+            Intent.PutExtra("userName", userName);
+            StartActivity(intent);
         }
     }
 }
