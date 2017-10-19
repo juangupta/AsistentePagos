@@ -22,6 +22,7 @@ using AsistentePagos.Core.Models;
 using Android.Speech.Tts;
 using Android.Speech;
 using Android.Content;
+using AsistentePagos.Core.Utils;
 
 namespace AsistentePagos.Activities
 {
@@ -39,6 +40,8 @@ namespace AsistentePagos.Activities
         private string textInput;
         private bool isRecording;
         private readonly int VOICE = 10;
+        SqLiteHelper database;
+        string dbpath;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -50,6 +53,13 @@ namespace AsistentePagos.Activities
             LoadAnimatedGif();
 
             GetInvoices();
+
+            database = new SqLiteHelper();
+            dbpath = System.IO.Path.Combine(
+        System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal),"ormdemo.db3");
+
+            database.createDatabase(dbpath);
+
         }
 
         async void GetInvoices()
@@ -59,6 +69,16 @@ namespace AsistentePagos.Activities
             invoices = (List<InvoiceModel>)invoicesResult.Result;
             invoiceListView.Adapter = new InvoiceListItemAdapter(this, invoices);
             tts = new TextToSpeech(this, this);
+
+            User user = new User();
+            user.Id = "1";
+            user.Name = "Yefry";
+            user.DocumentId = "123445";
+
+            //await database.insertUpdateData(user, dbpath);
+            //var response = database.FindUser(dbpath);
+            //Toast.MakeText(this, response.Name, ToastLength.Long);
+
         }
 
         void LoadAnimatedGif()
