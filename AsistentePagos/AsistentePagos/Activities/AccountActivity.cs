@@ -9,96 +9,81 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using AsistentePagos.Core.Models;
 using Felipecsl.GifImageViewLibrary;
-using System.Net.Http;
-//using Android.Graphics.Drawables;
-using Android.Graphics;
-using Java.IO;
-using System.IO;
 using Android.Webkit;
-using AsistentePagos.Core.Service;
 using AsistentePagos.Core.Models;
+using AsistentePagos.Adapter;
+using Android.Graphics;
+using AsistentePagos.Core.Service;
 using Android.Speech.Tts;
 using Android.Speech;
-using Android.Content;
-using AsistentePagos.Core.Utils;
 
 namespace AsistentePagos.Activities
 {
-    [Activity(Label = "InvoiceListActivity")]
-    public class InvoiceListActivity : Activity, TextToSpeech.IOnInitListener
+    [Activity(Label = "AccountActivity", MainLauncher = true)]
+    public class AccountActivity : Activity, TextToSpeech.IOnInitListener
     {
-        ImageView avatarImageView;
-        ListView invoiceListView;
         GifImageView gif;
-        WebView webview;
+        ListView accountListView;
+        WebView avatarWebView;
         ApiService apiService;
-        Response invoicesResult;
+        Response response;
         TextToSpeech tts;
-        List<InvoiceModel> invoices;
-        private string textInput;
+        List<Account> accountList;
         private bool isRecording;
+        private string textInput;
+
         private readonly int VOICE = 10;
-        SqLiteHelper database;
-        string dbpath;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
-            SetContentView(Resource.Layout.InvoicesList);
+            SetContentView(Resource.Layout.Accounts);
+
             InitComponents();
-            apiService = new ApiService();
+
+            List<Account> accountList = new List<Account>()
+           {
+                new Account()
+                {
+                    AccountName = "Debito",
+                    AccountType = "SAVING",
+                    AccountNumber = "123445"
+                }
+        };
+            
             LoadAnimatedGif();
-
-            GetInvoices();
-
-            database = new SqLiteHelper();
-            dbpath = System.IO.Path.Combine(
-                    System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal),"ormdemo.db3");
-
-            database.createDatabase(dbpath);
-
+            LoadUserAccount();
         }
 
-        async void GetInvoices()
+        async void LoadUserAccount()
         {
-            invoicesResult = await apiService.Get<InvoiceModel>("https://api.us.apiconnect.ibmcloud.com/",
-                "/playgroundbluemix-dev/hackathon/api/", "invoices", "yacalder", "vinula");
-            invoices = (List<InvoiceModel>)invoicesResult.Result;
-            invoiceListView.Adapter = new InvoiceListItemAdapter(this, invoices);
+            response = await apiService.Get<Account>("https://api.us.apiconnect.ibmcloud.com/",
+                "/playgroundbluemix-dev/hackathon/api/", "accounts", "juagomez", "vinula");
+            accountList = (List<Account>)response.Result;
+            accountListView.Adapter = new AccountListAdapter(this, accountList);
             tts = new TextToSpeech(this, this);
+        }
 
-            User user = new User();
-            user.Id = "1";
-            user.Name = "Yefry";
-            user.DocumentId = "123445";
 
-            //await database.insertUpdateData(user, dbpath);
-            //var response = database.FindUser(dbpath);
-            //Toast.MakeText(this, response.Name, ToastLength.Long);
-
+        private void InitComponents()
+        {
+            apiService = new ApiService();
+            accountListView = FindViewById<ListView>(Resource.Id.listViewAccounts);
+            avatarWebView = FindViewById<WebView>(Resource.Id.webViewAvatar);
         }
 
         void LoadAnimatedGif()
         {
-            //webview = view.FindViewById<WebView>(Resource.Id.webView1);
             // expects to find the 'loading_icon_small.gif' file in the 'root' of the assets folder, compiled as AndroidAsset.
-            webview.LoadUrl(string.Format("file:///android_asset/merlin.webp"));
+            avatarWebView.LoadUrl(string.Format("file:///android_asset/merlin.webp"));
             // this makes it transparent so you can load it over a background
-            webview.SetBackgroundColor(new Color(0, 0, 0, 0));
-            webview.SetLayerType(LayerType.Software, null);
+            avatarWebView.SetBackgroundColor(new Color(0, 0, 0, 0));
+            avatarWebView.SetLayerType(LayerType.Software, null);
         }
 
-        private void InitComponents()
-        {
-            //avatarImageView = FindViewById<ImageView>(Resource.Id.imageViewAvatar);
-            invoiceListView = FindViewById<ListView>(Resource.Id.listViewInvoices);
-            //gif = FindViewById<GifImageView>(Resource.Id.gifImageView);
-            webview = FindViewById<WebView>(Resource.Id.webView1);
-        }
-
+        #region TextToSpeech Methods
         public void OnInit(OperationResult status)
         {
             //Verificamos que nuestra variable haya sido inicializada correctamente
@@ -122,20 +107,12 @@ namespace AsistentePagos.Activities
         public void Speech()
         {
             string userName = "Juan";
-            int invoicesCount = invoices.Count;
 
-            Speak("Hola" + userName + ", tienes " + invoicesCount + " facturas pendientes por pagar");
-
-            for (var i = 0; i < invoicesCount; i++)
-            {
-                Speak(invoices[i].description + " de " + invoices[i].merchantName + " por valor de " + invoices[i].amount + " y debes pagar antes de " + invoices[i].dueDate.Month + " " +invoices[i].dueDate.Day + " " + invoices[i].dueDate.Year);
-            }
-
-            Speak("¿Cuál factura deseas pagar?");
+            Speak("");
+            Speak(userName + " porfa elige la cuenta con la que deseas realizar tus pagos");
+            
+            Speak("Por favor dime los últimos 3 numeros de la cuenta que quieres como favorito");
             Listen();
-            
-            
-
         }
 
         public void Speak(string text)
@@ -162,8 +139,6 @@ namespace AsistentePagos.Activities
                     //TODO
                 }
             }
-
-
         }
 
         public void Listen()
@@ -214,10 +189,12 @@ namespace AsistentePagos.Activities
                         textInput = matches[0];
 
                         // limit the output to 500 characters
-                        if (textInput.Length > 500)
-                            textInput = textInput.Substring(0, 500);
-                        invokeActivity();
-                        //hablar(textInput);
+                        if (textInput.Length >= 3)
+                        {
+                            textInput = textInput.Substring(0, 3);
+                            Account acountSelected = FindAccountFromSpeech(textInput);
+                        }
+                            
                     }
                     else
                         textInput = "Disculpa Juan Gabriel, no te entendí";
@@ -227,32 +204,26 @@ namespace AsistentePagos.Activities
 
             base.OnActivityResult(requestCode, resultVal, data);
         }
+        #endregion
 
-        void invokeActivity()
+        Account FindAccountFromSpeech(string text)
         {
-            string invoiceId = "";
-            for (var i = 0; i < invoices.Count; i++)
+            Account accountAux = null;
+            string lastNumber = "";
+            for (var i = 0; i < accountList.Count; i++)
             {
-                if (string.Equals(textInput, invoices[i].description, StringComparison.OrdinalIgnoreCase))
+                accountAux = accountList[i];
+                lastNumber = accountAux.AccountNumber.Substring(accountAux.AccountNumber.Length - 3, 3);
+                if(string.Equals(lastNumber, text, StringComparison.OrdinalIgnoreCase))
                 {
-                    invoiceId = invoices[i].id;
-                    break;
+                    accountAux = accountList[i];
+                    return accountAux;
                 }
-            }
 
-            if (!string.IsNullOrEmpty(invoiceId))
-            {
-                Intent intent = new Intent(this, typeof(MainActivity));
-                intent.PutExtra("invoiceId", invoiceId);
-                StartActivity(intent);
             }
-            else
-            {
-                Speak("No encuentro la factura que me indicas");
-                //Escuche o microfono
-            }
-            
+            return null;
         }
-
     }
+
+ 
 }

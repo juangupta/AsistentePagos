@@ -66,7 +66,9 @@
     <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\AccountActivity.cs" />
     <Compile Include="Activities\InvoiceListActivity.cs" />
+    <Compile Include="Adapter\AccountListAdapter.cs" />
     <Compile Include="Adapter\InvoiceListItemAdapter.cs" />
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
@@ -83,6 +85,12 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\InvoiceListItem.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\Accounts.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\AccountListItem.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
