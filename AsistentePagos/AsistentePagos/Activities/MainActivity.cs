@@ -13,7 +13,7 @@ namespace AsistentePagos
         {
             base.OnCreate(savedInstanceState);
 
-            // Set our view from the "main" layout resource
+            // Set our view from the "main" layout resource1
             SetContentView(Resource.Layout.Main);
             string invoiceId = Intent.GetStringExtra("invoiceId");
             Toast.MakeText(this, invoiceId, ToastLength.Long).Show();
