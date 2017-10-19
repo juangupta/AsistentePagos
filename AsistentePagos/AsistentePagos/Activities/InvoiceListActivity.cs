@@ -293,12 +293,14 @@ namespace AsistentePagos.Activities
 
                 if (paymentResult.IsSuccess)
                 {
-
+                    payment = (Payment)paymentResult.Result;
                     Intent intent = new Intent(this, typeof(PaymentActivity));
                     intent.PutExtra("invoiceId", invoice.id);
                     intent.PutExtra("invoiceDesc", invoice.description);
                     intent.PutExtra("invoiceMerchant", invoice.merchantName);
                     intent.PutExtra("invoiceAmount", invoice.amount);
+                    intent.PutExtra("userName", user.Name);
+                    intent.PutExtra("paymentId", payment.id);
                     StartActivity(intent);
 
                 }
