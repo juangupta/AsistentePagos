@@ -51,7 +51,10 @@ namespace AsistentePagos
 			public const int gato_developer = 2130837505;
 			
 			// aapt resource value: 0x7f020002
-			public const int une_icon = 2130837506;
+			public const int microphone_icon = 2130837506;
+			
+			// aapt resource value: 0x7f020003
+			public const int une_icon = 2130837507;
 			
 			static Drawable()
 			{
@@ -69,8 +72,11 @@ namespace AsistentePagos
 			// aapt resource value: 0x7f050001
 			public const int imageViewItem = 2131034113;
 			
-			// aapt resource value: 0x7f050008
-			public const int linearLayout1 = 2131034120;
+			// aapt resource value: 0x7f05000c
+			public const int imageViewMicrophone = 2131034124;
+			
+			// aapt resource value: 0x7f050009
+			public const int linearLayout1 = 2131034121;
 			
 			// aapt resource value: 0x7f050002
 			public const int linearLayoutDescription = 2131034114;
@@ -81,11 +87,11 @@ namespace AsistentePagos
 			// aapt resource value: 0x7f050000
 			public const int linearLayoutItem = 2131034112;
 			
-			// aapt resource value: 0x7f050009
-			public const int listViewInvoices = 2131034121;
+			// aapt resource value: 0x7f05000a
+			public const int listViewInvoices = 2131034122;
 			
-			// aapt resource value: 0x7f050007
-			public const int logo_pagosapp = 2131034119;
+			// aapt resource value: 0x7f050008
+			public const int logo_pagosapp = 2131034120;
 			
 			// aapt resource value: 0x7f050003
 			public const int textViewDescriptionItem = 2131034115;
@@ -96,8 +102,11 @@ namespace AsistentePagos
 			// aapt resource value: 0x7f050005
 			public const int textViewPaymentValue = 2131034117;
 			
-			// aapt resource value: 0x7f05000a
-			public const int webView1 = 2131034122;
+			// aapt resource value: 0x7f050007
+			public const int textViewTitle = 2131034119;
+			
+			// aapt resource value: 0x7f05000b
+			public const int webView1 = 2131034123;
 			
 			static Id()
 			{
