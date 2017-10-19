@@ -20,7 +20,7 @@ using Android.Speech;
 
 namespace AsistentePagos.Activities
 {
-    [Activity(Label = "AccountActivity", MainLauncher = true)]
+    [Activity(Label = "AccountActivity", MainLauncher = false)]
     public class AccountActivity : Activity, TextToSpeech.IOnInitListener
     {
         GifImageView gif;
