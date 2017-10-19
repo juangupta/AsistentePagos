@@ -16,7 +16,7 @@ using Android.Widget;
 
 namespace AsistentePagos.Activities
 {
-    [Activity(Label = "VoiceActivity", MainLauncher = true)]
+    [Activity(Label = "VoiceActivity", MainLauncher = false)]
     public class VoiceActivity : Activity, TextToSpeech.IOnInitListener
 
     {

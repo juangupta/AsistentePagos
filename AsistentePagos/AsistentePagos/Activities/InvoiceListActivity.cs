@@ -262,9 +262,9 @@ namespace AsistentePagos.Activities
 
             if (string.IsNullOrEmpty(invoice.id))
             {
-                Speak("Por favor repite el número de la factura");
+                Speak(user.Name + " No pude escuchar el nombre de la factura");
                 Listen(VOICE);
-
+                return;
             }
 
             Speak("Vas a pagar la factura " + invoice.description + " de la empresa " + invoice.merchantName + " por un valor de" + invoice.amount + " desde tu cuenta llamada " + user.AccountName + " ¿Deseas continuar?");
