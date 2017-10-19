@@ -1,4 +1,4 @@
-﻿
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,13 +31,18 @@ namespace AsistentePagos.Activities
         WebView avatarWebView;
 
 
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             //tts = new TextToSpeech(this, this);
             // Create your application here
+
             SetContentView(Resource.Layout.RecognitionVoice);
+            userName = Intent.GetStringExtra("userName");
+            LoadAnimatedGif();
             InitSpeech(); 
+
         }
 
         protected override void OnResume()
@@ -68,12 +73,13 @@ namespace AsistentePagos.Activities
 
         void InitSpeech(){
             tts = new TextToSpeech(this, this);
-            avatarWebView = FindViewById<WebView>(Resource.Id.webViewAvatar);
-            LoadAnimatedGif();
+
+           
         }
 
         void LoadAnimatedGif()
         {
+            avatarWebView = FindViewById<WebView>(Resource.Id.webView1);
             // expects to find the 'loading_icon_small.gif' file in the 'root' of the assets folder, compiled as AndroidAsset.
             avatarWebView.LoadUrl(string.Format("file:///android_asset/merlin.webp"));
             // this makes it transparent so you can load it over a background
@@ -115,7 +121,7 @@ namespace AsistentePagos.Activities
         public void Speech()
         {
             
-            userName = "Anibal";
+
 
             string[] speaks = {" ", "Hola"+userName+"para autenticar repite las siguientes oraciones", "La vaca en la torre es de color rojo"};
 
