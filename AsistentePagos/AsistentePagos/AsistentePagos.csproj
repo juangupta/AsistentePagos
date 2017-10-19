@@ -97,6 +97,7 @@
     <AndroidResource Include="Resources\layout\AccountListItem.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\RecognitionVoice.axml" />
     <AndroidResource Include="Resources\layout\Home.axml">
       <SubType>Designer</SubType>
     </AndroidResource>

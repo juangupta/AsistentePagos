@@ -1,4 +1,4 @@
-﻿
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +12,9 @@ using Android.Speech.Tts;
 using Android.Speech;
 using Android.Views;
 using Android.Widget;
-
+using Android.Webkit;
+using Felipecsl.GifImageViewLibrary;
+using Android.Graphics;
 
 namespace AsistentePagos.Activities
 {
@@ -26,13 +28,21 @@ namespace AsistentePagos.Activities
         private readonly int VOICE2 = 20;
         private string textInput;
         string userName;
+        WebView avatarWebView;
+
+
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             //tts = new TextToSpeech(this, this);
             // Create your application here
+
+            SetContentView(Resource.Layout.RecognitionVoice);
+            userName = Intent.GetStringExtra("userName");
+            LoadAnimatedGif();
             InitSpeech(); 
+
         }
 
         protected override void OnResume()
@@ -63,6 +73,18 @@ namespace AsistentePagos.Activities
 
         void InitSpeech(){
             tts = new TextToSpeech(this, this);
+
+           
+        }
+
+        void LoadAnimatedGif()
+        {
+            avatarWebView = FindViewById<WebView>(Resource.Id.webView1);
+            // expects to find the 'loading_icon_small.gif' file in the 'root' of the assets folder, compiled as AndroidAsset.
+            avatarWebView.LoadUrl(string.Format("file:///android_asset/merlin.webp"));
+            // this makes it transparent so you can load it over a background
+            avatarWebView.SetBackgroundColor(new Color(0, 0, 0, 0));
+            avatarWebView.SetLayerType(LayerType.Software, null);
         }
 
         public void Speak(string text)
@@ -99,7 +121,7 @@ namespace AsistentePagos.Activities
         public void Speech()
         {
             
-            userName = "Anibal";
+
 
             string[] speaks = {" ", "Hola"+userName+"para autenticar repite las siguientes oraciones", "La vaca en la torre es de color rojo"};
 
