@@ -31,14 +31,6 @@ namespace AsistentePagos
             SetContentView(Resource.Layout.Main);
             string invoiceId = Intent.GetStringExtra("invoiceId");
             Toast.MakeText(this, invoiceId, ToastLength.Long).Show();
-            user = new User();
-            user.Id = "beacc222da5086d625ed5e8515eba3c7";
-            user.Name = "Juan Gómez";
-            user.DocumentId = "1037002002";
-            user.DocumentType = "CC";
-            user.Password = "vinula";
-            user.AccountNumer = "12094368771";
-            user.AccountType = "SAVING";
             //tts = new TextToSpeech(this, this);
 
         }

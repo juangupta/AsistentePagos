@@ -69,6 +69,7 @@ namespace AsistentePagos.Activities
             user.AccountNumber = "17232144607";
             user.AccountType = "SAVING";
             user.AccountName = "Nómina";
+            user.Username = "juagomez";
 
             invoicesResult = await apiService.Get<InvoiceModel>("https://api.us.apiconnect.ibmcloud.com/",
                 "/playgroundbluemix-dev/hackathon/api/", "invoices", user.Username, user.Password);
@@ -272,7 +273,7 @@ namespace AsistentePagos.Activities
 
         async void confirmPayment()
         {
-            if (string.Equals(textInput, "si", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(textInput, "si", StringComparison.OrdinalIgnoreCase) || string.Equals(textInput, "sí", StringComparison.OrdinalIgnoreCase))
             {
 
                 Payment payment = new Payment();
@@ -287,7 +288,7 @@ namespace AsistentePagos.Activities
                 paymentResult = await apiService.Post<Payment>("https://api.us.apiconnect.ibmcloud.com/",
                "/playgroundbluemix-dev/hackathon/api/", "payments", payment, user.Username, user.Password);
 
-                if (!paymentResult.IsSuccess)
+                if (paymentResult.IsSuccess)
                 {
 
                     Intent intent = new Intent(this, typeof(PaymentActivity));
