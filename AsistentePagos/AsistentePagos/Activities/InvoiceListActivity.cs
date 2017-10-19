@@ -1,27 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using AsistentePagos.Core.Models;
 using Felipecsl.GifImageViewLibrary;
-using System.Net.Http;
 //using Android.Graphics.Drawables;
 using Android.Graphics;
-using Java.IO;
-using System.IO;
 using Android.Webkit;
 using AsistentePagos.Core.Service;
-using AsistentePagos.Core.Models;
 using Android.Speech.Tts;
 using Android.Speech;
-using Android.Content;
 using AsistentePagos.Core.Utils;
 
 namespace AsistentePagos.Activities
@@ -35,13 +27,17 @@ namespace AsistentePagos.Activities
         WebView webview;
         ApiService apiService;
         Response invoicesResult;
+        Response paymentResult;
         TextToSpeech tts;
         List<InvoiceModel> invoices;
         private string textInput;
         private bool isRecording;
+        User user;
         private readonly int VOICE = 10;
+        private readonly int VOICE2 = 20;
         SqLiteHelper database;
         string dbpath;
+        InvoiceModel invoice;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -56,7 +52,7 @@ namespace AsistentePagos.Activities
 
             database = new SqLiteHelper();
             dbpath = System.IO.Path.Combine(
-        System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal),"ormdemo.db3");
+            System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal),"ormdemo.db3");
 
             database.createDatabase(dbpath);
 
@@ -64,16 +60,23 @@ namespace AsistentePagos.Activities
 
         async void GetInvoices()
         {
+            user = new User();
+            user.Id = "beacc222da5086d625ed5e8515eba3c7";
+            user.Name = "Juan Gómez";
+            user.DocumentId = "1037002002";
+            user.DocumentType = "CC";
+            user.Password = "vinula";
+            user.AccountNumber = "17232144607";
+            user.AccountType = "SAVING";
+            user.AccountName = "Nómina";
+
             invoicesResult = await apiService.Get<InvoiceModel>("https://api.us.apiconnect.ibmcloud.com/",
-                "/playgroundbluemix-dev/hackathon/api/", "invoices", "yacalder", "vinula");
+                "/playgroundbluemix-dev/hackathon/api/", "invoices", user.Username, user.Password);
             invoices = (List<InvoiceModel>)invoicesResult.Result;
             invoiceListView.Adapter = new InvoiceListItemAdapter(this, invoices);
             tts = new TextToSpeech(this, this);
 
-            User user = new User();
-            user.Id = "1";
-            user.Name = "Yefry";
-            user.DocumentId = "123445";
+
 
             //await database.insertUpdateData(user, dbpath);
             //var response = database.FindUser(dbpath);
@@ -121,21 +124,17 @@ namespace AsistentePagos.Activities
 
         public void Speech()
         {
-            string userName = "Juan";
             int invoicesCount = invoices.Count;
 
-            Speak("Hola" + userName + ", tienes " + invoicesCount + " facturas pendientes por pagar");
+            Speak("Tienes " + invoicesCount + " facturas próximas a vencer. ¿Cuál factura deseas pagar?");
 
-            for (var i = 0; i < invoicesCount; i++)
-            {
-                Speak(invoices[i].description + " de " + invoices[i].merchantName + " por valor de " + invoices[i].amount + " y debes pagar antes de " + invoices[i].dueDate.Month + " " +invoices[i].dueDate.Day + " " + invoices[i].dueDate.Year);
-            }
+            //for (var i = 0; i < invoicesCount; i++)
+            //{
+            //    Speak(invoices[i].description + " de " + invoices[i].merchantName + " por valor de " + invoices[i].amount + " y debes pagar antes de " + invoices[i].dueDate.Month + " " +invoices[i].dueDate.Day + " " + invoices[i].dueDate.Year);
+            //}
 
-            Speak("¿Cuál factura deseas pagar?");
-            Listen();
+           Listen(VOICE);
             
-            
-
         }
 
         public void Speak(string text)
@@ -166,7 +165,7 @@ namespace AsistentePagos.Activities
 
         }
 
-        public void Listen()
+        public void Listen(int requestCode)
         {
             isRecording = false;
             string rec = Android.Content.PM.PackageManager.FeatureMicrophone;
@@ -197,7 +196,7 @@ namespace AsistentePagos.Activities
                 // if you do use another locale, regional dialects may not be recognised very well
 
                 voiceIntent.PutExtra(RecognizerIntent.ExtraLanguage, Java.Util.Locale.Default);
-                StartActivityForResult(voiceIntent, VOICE);
+                StartActivityForResult(voiceIntent, requestCode);
             }
 
         }
@@ -216,11 +215,31 @@ namespace AsistentePagos.Activities
                         // limit the output to 500 characters
                         if (textInput.Length > 500)
                             textInput = textInput.Substring(0, 500);
-                        invokeActivity();
+                        processPayment();
                         //hablar(textInput);
                     }
                     else
-                        textInput = "Disculpa Juan Gabriel, no te entendí";
+                        textInput = "Disculpa, no te entendí";
+
+                }
+            }
+            else if (requestCode == VOICE2)
+            {
+                if (resultVal == Result.Ok)
+                {
+                    var matches = data.GetStringArrayListExtra(RecognizerIntent.ExtraResults);
+                    if (matches.Count != 0)
+                    {
+                        textInput = matches[0];
+
+                        // limit the output to 500 characters
+                        if (textInput.Length > 500)
+                            textInput = textInput.Substring(0, 500);
+                        confirmPayment();
+                        //hablar(textInput);
+                    }
+                    else
+                        textInput = "Disculpa, no te entendí";
 
                 }
             }
@@ -228,31 +247,65 @@ namespace AsistentePagos.Activities
             base.OnActivityResult(requestCode, resultVal, data);
         }
 
-        void invokeActivity()
+        void processPayment()
         {
-            string invoiceId = "";
+            invoice = new InvoiceModel();
             for (var i = 0; i < invoices.Count; i++)
             {
                 if (string.Equals(textInput, invoices[i].description, StringComparison.OrdinalIgnoreCase))
                 {
-                    invoiceId = invoices[i].id;
+                    invoice = invoices[i];
                     break;
                 }
             }
 
-            if (!string.IsNullOrEmpty(invoiceId))
-            {
-                Intent intent = new Intent(this, typeof(MainActivity));
-                intent.PutExtra("invoiceId", invoiceId);
-                StartActivity(intent);
-            }
-            else
+            Speak("Vas a pagar la factura " + invoice.description + " de la empresa " + invoice.merchantName + " por un valor de" + invoice.amount + " desde tu cuenta llamada " + user.AccountName + " ¿Deseas continuar?");
+            Listen(VOICE2);
+
+            if (string.IsNullOrEmpty(invoice.id))
             {
                 Speak("No encuentro la factura que me indicas");
-                //Escuche o microfono
+
             }
             
         }
 
+        async void confirmPayment()
+        {
+            if (string.Equals(textInput, "si", StringComparison.OrdinalIgnoreCase))
+            {
+
+                Payment payment = new Payment();
+                payment.sourceAccount = user.AccountNumber;
+                payment.amountPayment = invoice.amount;
+                payment.description = invoice.description;
+                payment.sourceTypeAccount = user.AccountType;
+                payment.currency = "COP";
+                payment.invoiceId = invoice.id;
+
+
+                paymentResult = await apiService.Post<Payment>("https://api.us.apiconnect.ibmcloud.com/",
+               "/playgroundbluemix-dev/hackathon/api/", "payments", payment, user.Username, user.Password);
+
+                if (!paymentResult.IsSuccess)
+                {
+
+                    Intent intent = new Intent(this, typeof(PaymentActivity));
+                    intent.PutExtra("invoiceId", invoice.id);
+                    intent.PutExtra("invoiceDesc", invoice.description);
+                    intent.PutExtra("invoiceMerchant", invoice.merchantName);
+                    intent.PutExtra("invoiceAmount", invoice.amount);
+                    StartActivity(intent);
+
+                }
+                else
+                {
+                    Speak(paymentResult.Message);
+                }
+
+            }
+
+
+        }
     }
 }

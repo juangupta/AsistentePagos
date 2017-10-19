@@ -17,6 +17,10 @@ namespace AsistentePagos.Core.Models
         public string DocumentId { get; set; }
         public DateTime CreationDate { get; set; }
         public string Username { get; set; }
+        public string Password { get; set; }
+        public string AccountNumber { get; set; }
+        public string AccountType { get; set; }
+        public string AccountName { get; set; }
 
         public override string ToString()
         {

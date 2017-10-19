@@ -68,7 +68,7 @@
   <ItemGroup>
     <Compile Include="Activities\InvoiceListActivity.cs" />
     <Compile Include="Adapter\InvoiceListItemAdapter.cs" />
-    <Compile Include="Activities\MainActivity.cs" />
+    <Compile Include="Activities\PaymentActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
