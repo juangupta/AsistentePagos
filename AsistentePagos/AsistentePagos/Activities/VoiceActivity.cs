@@ -36,7 +36,7 @@ namespace AsistentePagos.Activities
             base.OnCreate(savedInstanceState);
             //tts = new TextToSpeech(this, this);
             // Create your application here
-           // SetContentView(Resource.Layout.)
+            SetContentView(Resource.Layout.RecognitionVoice);
             InitSpeech(); 
         }
 
