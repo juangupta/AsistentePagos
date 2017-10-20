@@ -39,6 +39,7 @@ namespace AsistentePagos.Activities
             // Create your application here
 
             SetContentView(Resource.Layout.RecognitionVoice);
+            ActionBar.Hide();
             userName = Intent.GetStringExtra("userName");
             LoadAnimatedGif();
             InitSpeech();
@@ -74,7 +75,6 @@ namespace AsistentePagos.Activities
         void InitSpeech(){
             tts = new TextToSpeech(this, this);
 
-           
         }
 
         void LoadAnimatedGif()
@@ -134,6 +134,7 @@ namespace AsistentePagos.Activities
 
         public void Listen(int VOICE)
         {
+            
             isRecording = false;
             string rec = Android.Content.PM.PackageManager.FeatureMicrophone;
             if (rec != "android.hardware.microphone")

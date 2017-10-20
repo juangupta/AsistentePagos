@@ -44,6 +44,7 @@ namespace AsistentePagos.Activities
             base.OnCreate(savedInstanceState);
 
             SetContentView(Resource.Layout.InvoicesList);
+            ActionBar.Hide();
             InitComponents();
             apiService = new ApiService();
             LoadAnimatedGif();
