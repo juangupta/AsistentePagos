@@ -49,7 +49,7 @@ namespace AsistentePagos.Activities
         {
             //webview = view.FindViewById<WebView>(Resource.Id.webView1);
             // expects to find the 'loading_icon_small.gif' file in the 'root' of the assets folder, compiled as AndroidAsset.
-            webview.LoadUrl(string.Format("file:///android_asset/merlin.webp"));
+            webview.LoadUrl(string.Format("file:///android_asset/avatar_mujer_grande_sin_fondo.gif"));
             // this makes it transparent so you can load it over a background
             webview.SetBackgroundColor(new Color(0, 0, 0, 0));
             webview.SetLayerType(LayerType.Software, null);
@@ -80,12 +80,15 @@ namespace AsistentePagos.Activities
             Speech();
         }
 
-        public async void Speech()
+        public void Speech()
         {
 
-            // Saludamos al usuario
-            Speak("");
-            Speak("En Bancolombia tu voz es tu clave        ¿Dime tu nombre para autenticarte?");
+            string[] speaks = { " ", "En Bancolombia tu voz es tu clave", "¿Dime tu nombre para autenticarte?" };
+
+            for (var i = 0; i < speaks.Length; i++)
+            {
+                Speak(speaks[i]);
+            }
             Listen();
         }
 

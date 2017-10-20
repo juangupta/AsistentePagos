@@ -30,6 +30,7 @@ namespace AsistentePagos.Activities
         TextView title;
         ApiService apiService;
         Response response;
+        ImageView microphoneImageView;
         TextToSpeech tts;
         List<Account> accountList;
         SqLiteHelper database;
@@ -50,6 +51,13 @@ namespace AsistentePagos.Activities
             
             LoadAnimatedGif();
             LoadUserAccount();
+
+            microphoneImageView.Click += MicrophoneImageView_Click;
+        }
+
+        private void MicrophoneImageView_Click(object sender, EventArgs e)
+        {
+            Talk();
         }
 
         async void LoadUserAccount()
@@ -60,6 +68,11 @@ namespace AsistentePagos.Activities
                 "/playgroundbluemix-dev/hackathon/api/", "accounts", userDb.Username, userDb.PassUser);
             accountList = (List<Account>)response.Result;
             accountListView.Adapter = new AccountListAdapter(this, accountList);
+            Talk();
+        }
+
+        void Talk()
+        {
             tts = new TextToSpeech(this, this);
         }
 
@@ -70,6 +83,7 @@ namespace AsistentePagos.Activities
             accountListView = FindViewById<ListView>(Resource.Id.listViewAccounts);
             avatarWebView = FindViewById<WebView>(Resource.Id.webViewAvatar);
             title = FindViewById<TextView>(Resource.Id.textViewTitle);
+            microphoneImageView = FindViewById<ImageView>(Resource.Id.imageViewMicrophone);
             database = new SqLiteHelper();
             dbpath = System.IO.Path.Combine(
             System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "ormdemo.db3");
@@ -79,7 +93,7 @@ namespace AsistentePagos.Activities
         void LoadAnimatedGif()
         {
             // expects to find the 'loading_icon_small.gif' file in the 'root' of the assets folder, compiled as AndroidAsset.
-            avatarWebView.LoadUrl(string.Format("file:///android_asset/sin_fondo_mujer.webp"));
+            avatarWebView.LoadUrl(string.Format("file:///android_asset/sin_fondo_mujer.gif"));
             // this makes it transparent so you can load it over a background
             avatarWebView.SetBackgroundColor(new Color(0, 0, 0, 0));
             avatarWebView.SetLayerType(LayerType.Software, null);

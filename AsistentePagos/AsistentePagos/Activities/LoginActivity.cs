@@ -33,7 +33,7 @@ namespace AsistentePagos.Activities
             SetContentView(Resource.Layout.LoginUser);
             InitComponents();
             apiService = new ApiService();
-
+            ActionBar.Hide();
             Button button = FindViewById<Button>(Resource.Id.BtnAceptar);
             button.Click += OnLogin;
 

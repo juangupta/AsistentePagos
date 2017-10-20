@@ -81,7 +81,7 @@ namespace AsistentePagos.Activities
         {
             avatarWebView = FindViewById<WebView>(Resource.Id.webView1);
             // expects to find the 'loading_icon_small.gif' file in the 'root' of the assets folder, compiled as AndroidAsset.
-            avatarWebView.LoadUrl(string.Format("file:///android_asset/merlin.webp"));
+            avatarWebView.LoadUrl(string.Format("file:///android_asset/avatar_mujer_grande_sin_fondo.gif"));
             // this makes it transparent so you can load it over a background
             avatarWebView.SetBackgroundColor(new Color(0, 0, 0, 0));
             avatarWebView.SetLayerType(LayerType.Software, null);
@@ -208,11 +208,11 @@ namespace AsistentePagos.Activities
                         if (textInput.Length > 30)
                             textInput = textInput.Substring(0, 30);
 
-                        Speak("La validación de tu voz ha sido exitosamente");
+                        Speak("La validación de tu voz se realizado de manera exitosa");
                         CallAccountActivity();
                     }
                     else
-                        Speak("No se logro realizar tu validación de voz");
+                        Speak("No se logro realizar la validación de voz");
 
                 }
             }

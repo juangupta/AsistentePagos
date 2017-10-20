@@ -47,7 +47,7 @@ namespace AsistentePagos.Activities
             // Set our view from the "home" layout resource
             SetContentView(Resource.Layout.Home);
             InitComponents();
-
+            ActionBar.Hide();
             // Cargamos el avatar
             
 
@@ -82,7 +82,7 @@ namespace AsistentePagos.Activities
         {
             //webview = view.FindViewById<WebView>(Resource.Id.webView1);
             // expects to find the 'loading_icon_small.gif' file in the 'root' of the assets folder, compiled as AndroidAsset.
-            webview.LoadUrl(string.Format("file:///android_asset/merlin.webp"));
+            webview.LoadUrl(string.Format("file:///android_asset/avatar_mujer_grande_sin_fondo.gif"));
             // this makes it transparent so you can load it over a background
             webview.SetBackgroundColor(new Color(0, 0, 0, 0));
             webview.SetLayerType(LayerType.Software, null);
@@ -111,17 +111,17 @@ namespace AsistentePagos.Activities
 
         public async void Speech()
         {
-            
             // Consultamos el nombre de la DB
-            //var response = database.FindUser(dbpath);
             var response = database.FindUser(dbpath);
-            //Toast.MakeText(this, response.Name, ToastLength.Long);
             string userName = response.Name;
 
             // Saludamos al usuario
-            Speak("");
-            Speak("Hola" + userName + ", Bienvenido ha tu Asistente de Pagos, tienes facturas pendientes por pagar        ¿Quieres consultarlas?");
-            //Speak("¿Quieres consultarlas?");
+            string[] speaks = { " ", "Hola" + userName + ", Bienvenido ha tu Asistente de Pagos", "tienes facturas pendientes por pagar", "¿Quieres consultarlas?" };
+
+            for (var i = 0; i < speaks.Length; i++)
+            {
+                Speak(speaks[i]);
+            }
             Listen();
         }
 

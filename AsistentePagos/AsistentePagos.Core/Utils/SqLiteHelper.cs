@@ -61,8 +61,11 @@ namespace AsistentePagos.Core.Utils
             {
                 var db = new SQLiteConnection(path);
                 var queryResult = db.Query<User>("SELECT * FROM User");
-
-                return queryResult[0];
+                if (queryResult.Count != 0)
+                {
+                    return queryResult[0];
+                }
+                return null;
             }
             catch (SQLiteException ex)
             {

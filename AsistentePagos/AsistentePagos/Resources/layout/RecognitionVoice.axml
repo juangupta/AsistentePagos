@@ -2,26 +2,58 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
     <LinearLayout
         android:orientation="horizontal"
+        android:minWidth="25dp"
+        android:minHeight="25dp"
+        android:layout_width="match_parent"
+        android:background="#26407D"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayoutHeader">
+        <TextView
+            android:text="Matricula tu Voz"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewTitle"
+            android:textColor="#FFFFFF"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:layout_weight="0.9"
+            android:textSize="19dp" />
+        <ImageView
+            android:layout_width="54dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="8dp"
+            android:layout_gravity="end"
+            android:id="@+id/logo_pagosapp"
+            android:src="@drawable/icono_aplicacion_azul"
+            android:layout_marginTop="0.0dp"
+            android:layout_weight="0.1" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
         android:minWidth="25px"
         android:minHeight="25px"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/linearLayout1"
-        android:layout_weight="0.2">
+        android:id="@+id/linearLayout1">
         <android.webkit.WebView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/webView1"
-            android:layout_weight="0.8" />
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="30dp" />
         <ImageView
             android:src="@drawable/microphone_icon"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="20dp"
             android:id="@+id/imageViewMicrophone"
-            android:layout_weight="0.2"
             android:layout_gravity="center" />
     </LinearLayout>
 </LinearLayout>
