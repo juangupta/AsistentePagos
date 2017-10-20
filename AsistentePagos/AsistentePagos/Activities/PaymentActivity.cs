@@ -10,6 +10,9 @@ using AsistentePagos.Core.Utils;
 
 using Android.Speech.Tts;
 using Android.Speech;
+using Android.Webkit;
+using Android.Graphics;
+using Android.Views;
 
 namespace AsistentePagos
 {
@@ -19,6 +22,7 @@ namespace AsistentePagos
         TextToSpeech tts;
         User user;
         SqLiteHelper database;
+        WebView webview;
         string dbpath;
 
         public void OnInit([GeneratedEnum] OperationResult status)
@@ -44,13 +48,13 @@ namespace AsistentePagos
         {
 
             string userName = Intent.GetStringExtra("userName");
-            Speak("Tu pago fue efectuado exitosamente. Actualmente tienes un crédito pre aprobado, ¿estás interesado en adquirirlo?");
+            // Saludamos al usuario
+            string[] speaks = { "Tu pago fue efectuado exitosamente", "Actualmente tienes un crédito pre aprobado", "¿estás interesado en adquirirlo?" };
 
-            //for (var i = 0; i < invoicesCount; i++)
-            //{
-            //    Speak(invoices[i].description + " de " + invoices[i].merchantName + " por valor de " + invoices[i].amount + " y debes pagar antes de " + invoices[i].dueDate.Month + " " +invoices[i].dueDate.Day + " " + invoices[i].dueDate.Year);
-            //}
-
+            for (var i = 0; i < speaks.Length; i++)
+            {
+                Speak(speaks[i]);
+            }
             //Listen(VOICE);
 
         }
@@ -89,13 +93,35 @@ namespace AsistentePagos
 
             // Set our view from the "main" layout resource1
             SetContentView(Resource.Layout.Main);
+            InitComponents();
+            LoadAnimatedGif();
+            ActionBar.Hide();
             string paymentId = Intent.GetStringExtra("paymentId");
             Toast.MakeText(this, paymentId, ToastLength.Long).Show();
             tts = new TextToSpeech(this, this);
 
         }
 
-       
+        private void InitComponents()
+        {
+            //avatarImageView = FindViewById<ImageView>(Resource.Id.imageViewAvatar);
+            //invoiceListView = FindViewById<ListView>(Resource.Id.listViewInvoices);
+            //gif = FindViewById<GifImageView>(Resource.Id.gifImageView);
+            webview = FindViewById<WebView>(Resource.Id.webViewAvatar);
+        }
+
+        void LoadAnimatedGif()
+        {
+            //webview = view.FindViewById<WebView>(Resource.Id.webView1);
+            // expects to find the 'loading_icon_small.gif' file in the 'root' of the assets folder, compiled as AndroidAsset.
+            webview.LoadUrl(string.Format("file:///android_asset/merlin.webp"));
+            // this makes it transparent so you can load it over a background
+            webview.SetBackgroundColor(new Color(0, 0, 0, 0));
+            webview.SetLayerType(LayerType.Software, null);
+
+        }
+
+
     }
 }
 
