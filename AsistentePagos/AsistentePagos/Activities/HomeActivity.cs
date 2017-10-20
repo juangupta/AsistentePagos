@@ -54,7 +54,6 @@ namespace AsistentePagos.Activities
             database = new SqLiteHelper();
             dbpath = System.IO.Path.Combine(
             System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "ormdemo.db3");
-            database.createDatabase(dbpath);
 
             ImageView imageMicrophone = FindViewById<ImageView>(Resource.Id.imageViewMicrophone);
             imageMicrophone.Click += delegate
@@ -112,13 +111,6 @@ namespace AsistentePagos.Activities
         {
             
             // Consultamos el nombre de la DB
-
-            User user = new User();
-            user.Id = "1";
-            user.Name = "Yefry";
-            user.DocumentId = "123445";
-
-            await database.insertUpdateData(user, dbpath);
             //var response = database.FindUser(dbpath);
             var response = database.FindUser(dbpath);
             //Toast.MakeText(this, response.Name, ToastLength.Long);

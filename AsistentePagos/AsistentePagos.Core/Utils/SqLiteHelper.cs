@@ -40,6 +40,20 @@ namespace AsistentePagos.Core.Utils
             }
         }
 
+        public async Task<string> UpdateData(User data, string path)
+        {
+            try
+            {
+                var db = new SQLiteAsyncConnection(path);
+                await db.UpdateAsync(data);
+                return "Single data file inserted or updated";
+            }
+            catch (SQLiteException ex)
+            {
+                return ex.Message;
+            }
+        }
+
         public User FindUser(string path)
         {
             try

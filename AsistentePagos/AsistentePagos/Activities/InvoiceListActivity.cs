@@ -48,11 +48,11 @@ namespace AsistentePagos.Activities
             apiService = new ApiService();
             LoadAnimatedGif();
 
-            GetInvoices();
-
             database = new SqLiteHelper();
             dbpath = System.IO.Path.Combine(
-            System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal),"ormdemo.db3");
+            System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "ormdemo.db3");
+
+            GetInvoices();
 
             database.createDatabase(dbpath);
 
@@ -60,19 +60,19 @@ namespace AsistentePagos.Activities
 
         async void GetInvoices()
         {
-            user = new User();
-            user.Id = "beacc222da5086d625ed5e8515eba3c7";
-            user.Name = "Juan Gómez";
-            user.DocumentId = "1037002002";
-            user.DocumentType = "CC";
-            user.Password = "vinula";
-            user.AccountNumber = "17232144607";
-            user.AccountType = "SAVING";
-            user.AccountName = "Nómina";
-            user.Username = "juagomez";
+            user = database.FindUser(dbpath);
+            //user.Id = "beacc222da5086d625ed5e8515eba3c7";
+            //user.Name = "Juan Gómez";
+            //user.DocumentId = "1037002002";
+            //user.DocumentType = "CC";
+            //user.Password = "vinula";
+            //user.AccountNumber = "17232144607";
+            //user.AccountType = "SAVING";
+            //user.AccountName = "Nómina";
+            //user.Username = "juagomez";
 
             invoicesResult = await apiService.Get<InvoiceModel>("https://api.us.apiconnect.ibmcloud.com/",
-                "/playgroundbluemix-dev/hackathon/api/", "invoices", user.Username, user.Password);
+                "/playgroundbluemix-dev/hackathon/api/", "invoices", user.Username, user.PassUser);
             invoices = (List<InvoiceModel>)invoicesResult.Result;
             invoiceListView.Adapter = new InvoiceListItemAdapter(this, invoices);
             tts = new TextToSpeech(this, this);
@@ -292,7 +292,7 @@ namespace AsistentePagos.Activities
 
 
                 paymentResult = await apiService.Post<Payment>("https://api.us.apiconnect.ibmcloud.com/",
-               "/playgroundbluemix-dev/hackathon/api/", "payments", payment, user.Username, user.Password);
+               "/playgroundbluemix-dev/hackathon/api/", "payments", payment, user.Username, user.PassUser);
 
                 if (paymentResult.IsSuccess)
                 {

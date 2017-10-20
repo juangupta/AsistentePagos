@@ -17,6 +17,7 @@ using Android.Graphics;
 using AsistentePagos.Core.Service;
 using Android.Speech.Tts;
 using Android.Speech;
+using AsistentePagos.Core.Utils;
 
 namespace AsistentePagos.Activities
 {
@@ -30,6 +31,9 @@ namespace AsistentePagos.Activities
         Response response;
         TextToSpeech tts;
         List<Account> accountList;
+        SqLiteHelper database;
+        User userDb;
+        string dbpath;
         private bool isRecording;
         private string textInput;
 
@@ -42,16 +46,6 @@ namespace AsistentePagos.Activities
             SetContentView(Resource.Layout.Accounts);
 
             InitComponents();
-
-            List<Account> accountList = new List<Account>()
-           {
-                new Account()
-                {
-                    AccountName = "Debito",
-                    AccountType = "SAVING",
-                    AccountNumber = "123445"
-                }
-        };
             
             LoadAnimatedGif();
             LoadUserAccount();
@@ -59,8 +53,10 @@ namespace AsistentePagos.Activities
 
         async void LoadUserAccount()
         {
+            userDb = database.FindUser(dbpath);
+
             response = await apiService.Get<Account>("https://api.us.apiconnect.ibmcloud.com/",
-                "/playgroundbluemix-dev/hackathon/api/", "accounts", "juagomez", "vinula");
+                "/playgroundbluemix-dev/hackathon/api/", "accounts", userDb.Username, userDb.PassUser);
             accountList = (List<Account>)response.Result;
             accountListView.Adapter = new AccountListAdapter(this, accountList);
             tts = new TextToSpeech(this, this);
@@ -72,6 +68,10 @@ namespace AsistentePagos.Activities
             apiService = new ApiService();
             accountListView = FindViewById<ListView>(Resource.Id.listViewAccounts);
             avatarWebView = FindViewById<WebView>(Resource.Id.webViewAvatar);
+            database = new SqLiteHelper();
+            dbpath = System.IO.Path.Combine(
+            System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "ormdemo.db3");
+
         }
 
         void LoadAnimatedGif()
@@ -106,10 +106,10 @@ namespace AsistentePagos.Activities
 
         public void Speech()
         {
-            string userName = "Juan";
+            string userName = userDb.Name;
 
             Speak("");
-            Speak(userName + " porfa elige la cuenta con la que deseas realizar tus pagos");
+            Speak(userName + " por favor elige la cuenta con la que deseas realizar tus pagos");
             
             Speak("Por favor dime los últimos 3 numeros de la cuenta que quieres como favorito");
             Listen();
@@ -193,8 +193,14 @@ namespace AsistentePagos.Activities
                         {
                             textInput = textInput.Substring(0, 3);
                             Account acountSelected = FindAccountFromSpeech(textInput);
+                            if(acountSelected == null)
+                            {
+                                Speech();
+                            }
+                            updateUser(acountSelected);
+                            LaunchActivity();
                         }
-                        LaunchActivity();
+                        
                             
                     }
                     else
@@ -204,6 +210,19 @@ namespace AsistentePagos.Activities
             }
 
             base.OnActivityResult(requestCode, resultVal, data);
+        }
+
+        private async void updateUser(Account acountSelected)
+        {
+            if(acountSelected != null)
+            {
+                userDb.AccountName = acountSelected.AccountName;
+                userDb.AccountType = acountSelected.AccountType;
+                userDb.AccountNumber = acountSelected.AccountNumber;
+
+                await database.UpdateData(userDb, dbpath);
+            }
+            
         }
 
         private void LaunchActivity()

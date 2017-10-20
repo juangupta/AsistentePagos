@@ -1,54 +1,63 @@
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Speech.Tts;
-using Android.Speech;
 using Android.Views;
 using Android.Widget;
-using Android.Webkit;
-using Felipecsl.GifImageViewLibrary;
 using Android.Graphics;
+using Android.Webkit;
+using Android.Speech.Tts;
+using Android.Speech;
+using Android.App;
 
 namespace AsistentePagos.Activities
 {
-    [Activity(Label = "VoiceActivity", MainLauncher = false)]
-    public class VoiceActivity : Activity, TextToSpeech.IOnInitListener
-
+    [Activity(Label = "Asistente Pagos", MainLauncher = false)]
+    public class LoginVoice : Activity, TextToSpeech.IOnInitListener
     {
-        TextToSpeech tts;
-        private bool isRecording;
-        private readonly int VOICE1 = 10;
-        private readonly int VOICE2 = 20;
+        private readonly int VOICE = 10;
         private string textInput;
-        string userName;
-        WebView avatarWebView;
-
-
-
+        private bool isRecording;
+        WebView webview;
+        TextToSpeech tts;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            //tts = new TextToSpeech(this, this);
-            // Create your application here
 
-            SetContentView(Resource.Layout.RecognitionVoice);
-            userName = Intent.GetStringExtra("userName");
+            // Create your application here
+            // Set our view from the "LoginVoice" layout resource
+            SetContentView(Resource.Layout.LoginVoice);
+            InitComponents();
+
+            // Cargamos el avatar
             LoadAnimatedGif();
-            InitSpeech();
-            
+            ImageView imageMicrophone = FindViewById<ImageView>(Resource.Id.imageViewMicrophone);
+            imageMicrophone.Click += delegate
+            {
+                AutenticarVoz();
+            };
+            AutenticarVoz();
+        }
+        private void InitComponents()
+        {
+            //avatarImageView = FindViewById<ImageView>(Resource.Id.imageViewAvatar);
+            //invoiceListView = FindViewById<ListView>(Resource.Id.listViewInvoices);
+            //gif = FindViewById<GifImageView>(Resource.Id.gifImageView);
+            webview = FindViewById<WebView>(Resource.Id.webView1);
         }
 
-        protected override void OnResume()
+        void LoadAnimatedGif()
         {
-            base.OnResume();
+            //webview = view.FindViewById<WebView>(Resource.Id.webView1);
+            // expects to find the 'loading_icon_small.gif' file in the 'root' of the assets folder, compiled as AndroidAsset.
+            webview.LoadUrl(string.Format("file:///android_asset/merlin.webp"));
+            // this makes it transparent so you can load it over a background
+            webview.SetBackgroundColor(new Color(0, 0, 0, 0));
+            webview.SetLayerType(LayerType.Software, null);
+        }
 
+        public void AutenticarVoz()
+        {
+            //Task.Delay(10).Wait();
+            tts = new TextToSpeech(this, this);
         }
 
         public void OnInit(OperationResult status)
@@ -68,28 +77,19 @@ namespace AsistentePagos.Activities
                 Toast.MakeText(this, "Error al activar TTS", ToastLength.Long).Show();
             }
             Speech();
-
         }
 
-        void InitSpeech(){
-            tts = new TextToSpeech(this, this);
-
-           
-        }
-
-        void LoadAnimatedGif()
+        public async void Speech()
         {
-            avatarWebView = FindViewById<WebView>(Resource.Id.webView1);
-            // expects to find the 'loading_icon_small.gif' file in the 'root' of the assets folder, compiled as AndroidAsset.
-            avatarWebView.LoadUrl(string.Format("file:///android_asset/merlin.webp"));
-            // this makes it transparent so you can load it over a background
-            avatarWebView.SetBackgroundColor(new Color(0, 0, 0, 0));
-            avatarWebView.SetLayerType(LayerType.Software, null);
+
+            // Saludamos al usuario
+            Speak("");
+            Speak("En Bancolombia tu voz es tu clave        ¿Dime tu nombre para autenticarte?");
+            Listen();
         }
 
         public void Speak(string text)
         {
-            
             if (tts != null)
             {
                 //En una variable tipo string depositamos el contenido de nuestro textbox
@@ -98,7 +98,6 @@ namespace AsistentePagos.Activities
                 if (text != null)
                 {
                     //Verificamos que nuestro telefono no este usando la funcion de dictado
-
                     if (!tts.IsSpeaking)
                     {
                         //mandamos a llamar la funcion de dictado que nos pedida tres parametros
@@ -108,31 +107,14 @@ namespace AsistentePagos.Activities
                         tts.Speak(text, QueueMode.Flush, null);
                     }
                 }
-
                 while (tts.IsSpeaking)
                 {
                     //TODO
                 }
             }
-
-
         }
 
-        public void Speech()
-        {
-            
-            string[] speaks = {" ", "Hola"+userName+"para autenticar repite las siguientes oraciones", "La vaca en la torre es de color rojo"};
-
-            for (var i = 0; i < speaks.Length; i++)
-            {
-                Speak(speaks[i]);
-            }
-                
-            Listen(VOICE1);
-
-        }
-
-        public void Listen(int VOICE)
+        public void Listen()
         {
             isRecording = false;
             string rec = Android.Content.PM.PackageManager.FeatureMicrophone;
@@ -164,15 +146,12 @@ namespace AsistentePagos.Activities
 
                 voiceIntent.PutExtra(RecognizerIntent.ExtraLanguage, Java.Util.Locale.Default);
                 StartActivityForResult(voiceIntent, VOICE);
-
-
             }
-
         }
 
         protected override void OnActivityResult(int requestCode, Result resultVal, Intent data)
         {
-            if (requestCode == VOICE1)
+            if (requestCode == VOICE)
             {
                 if (resultVal == Result.Ok)
                 {
@@ -182,47 +161,21 @@ namespace AsistentePagos.Activities
                         textInput = matches[0];
 
                         // limit the output to 500 characters
-                        if (textInput.Length > 30)
-                            textInput = textInput.Substring(0, 30);
-                        
-                        Speak("El gato se tomo la leche del abuelo");
+                        if (textInput.Length > 500)
+                            textInput = textInput.Substring(0, 500);
+                        // Consultamos las facturas
+                        invokeHome();
                     }
                     else
-                        Speak("En este momento el sistema no se encuentra disponible");
-
-                }
-                Listen(VOICE2);
-            }
-
-            if (requestCode == VOICE2)
-            {
-                if (resultVal == Result.Ok)
-                {
-                    var matches = data.GetStringArrayListExtra(RecognizerIntent.ExtraResults);
-                    if (matches.Count != 0)
-                    {
-                        textInput = matches[0];
-
-                        // limit the output to 500 characters
-                        if (textInput.Length > 30)
-                            textInput = textInput.Substring(0, 30);
-
-                        Speak("La validación de tu voz ha sido exitosamente");
-                        CallAccountActivity();
-                    }
-                    else
-                        Speak("No se logro realizar tu validación de voz");
-
+                        textInput = "Disculpa, no te entendí";
                 }
             }
-
             base.OnActivityResult(requestCode, resultVal, data);
         }
 
-        private void CallAccountActivity()
+        void invokeHome()
         {
-            Intent intent = new Intent(this, typeof(AccountActivity));
-            Intent.PutExtra("userName", userName);
+            Intent intent = new Intent(this, typeof(HomeActivity));
             StartActivity(intent);
         }
     }
