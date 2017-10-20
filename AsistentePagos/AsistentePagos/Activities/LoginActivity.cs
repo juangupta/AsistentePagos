@@ -16,7 +16,7 @@ using AsistentePagos.Core.Utils;
 
 namespace AsistentePagos.Activities
 {
-    [Activity(Label = "LoginActivity", MainLauncher = true)]
+    [Activity(Label = "LoginActivity", MainLauncher = false)]
     public class LoginActivity : Activity
     {
         private EditText usernameInput, passwordInput;
