@@ -15,7 +15,7 @@ using AsistentePagos.Core.Models;
 namespace AsistentePagos.Activities
 {
     [Activity(Theme = "@style/Theme.Splash", //Indicates the theme to use for this activity
-             MainLauncher = false, //Set it as boot activity
+             MainLauncher = true, //Set it as boot activity
              NoHistory = true)]
     public class SplashActivity : Activity
     {
@@ -26,12 +26,12 @@ namespace AsistentePagos.Activities
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            System.Threading.Thread.Sleep(5000); //Let's wait awhile...
+            System.Threading.Thread.Sleep(2000); //Let's wait awhile...
 
             database = new SqLiteHelper();
             dbpath = System.IO.Path.Combine(
             System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "ormdemo.db3");
-
+            database.createDatabase(dbpath);
             user = database.FindUser(dbpath);
 
             if(user != null)

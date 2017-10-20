@@ -78,10 +78,10 @@ namespace AsistentePagos
                         tts.Speak(text, QueueMode.Flush, null);
                     }
                 }
-                //while (tts.IsSpeaking)
-                //{
-                //    //TODO
-                //}
+                while (tts.IsSpeaking)
+                {
+                    //TODO
+                }
             }
 
 
@@ -97,7 +97,6 @@ namespace AsistentePagos
             LoadAnimatedGif();
             ActionBar.Hide();
             string paymentId = Intent.GetStringExtra("paymentId");
-            Toast.MakeText(this, paymentId, ToastLength.Long).Show();
             tts = new TextToSpeech(this, this);
 
         }
@@ -114,7 +113,7 @@ namespace AsistentePagos
         {
             //webview = view.FindViewById<WebView>(Resource.Id.webView1);
             // expects to find the 'loading_icon_small.gif' file in the 'root' of the assets folder, compiled as AndroidAsset.
-            webview.LoadUrl(string.Format("file:///android_asset/merlin.webp"));
+            webview.LoadUrl(string.Format("file:///android_asset/avatar_hombre_grande_sin_fondo.gif"));
             // this makes it transparent so you can load it over a background
             webview.SetBackgroundColor(new Color(0, 0, 0, 0));
             webview.SetLayerType(LayerType.Software, null);

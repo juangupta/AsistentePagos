@@ -93,7 +93,7 @@ namespace AsistentePagos.Activities
         void LoadAnimatedGif()
         {
             // expects to find the 'loading_icon_small.gif' file in the 'root' of the assets folder, compiled as AndroidAsset.
-            avatarWebView.LoadUrl(string.Format("file:///android_asset/sin_fondo_mujer.gif"));
+            avatarWebView.LoadUrl(string.Format("file:///android_asset/sin_fondo_hombre.gif"));
             // this makes it transparent so you can load it over a background
             avatarWebView.SetBackgroundColor(new Color(0, 0, 0, 0));
             avatarWebView.SetLayerType(LayerType.Software, null);

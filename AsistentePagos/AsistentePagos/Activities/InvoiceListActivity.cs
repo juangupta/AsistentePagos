@@ -18,7 +18,7 @@ using AsistentePagos.Core.Utils;
 
 namespace AsistentePagos.Activities
 {
-    [Activity(Label = "InvoiceListActivity", MainLauncher = true)]
+    [Activity(Label = "InvoiceListActivity", MainLauncher = false)]
     public class InvoiceListActivity : Activity, TextToSpeech.IOnInitListener
     {
         ImageView avatarImageView;
@@ -90,7 +90,7 @@ namespace AsistentePagos.Activities
         {
             //webview = view.FindViewById<WebView>(Resource.Id.webView1);
             // expects to find the 'loading_icon_small.gif' file in the 'root' of the assets folder, compiled as AndroidAsset.
-            webview.LoadUrl(string.Format("file:///android_asset/sin_fondo_mujer.gif"));
+            webview.LoadUrl(string.Format("file:///android_asset/sin_fondo_hombre.gif"));
             // this makes it transparent so you can load it over a background
             webview.SetBackgroundColor(new Color(0, 0, 0, 0));
             webview.SetLayerType(LayerType.Software, null);

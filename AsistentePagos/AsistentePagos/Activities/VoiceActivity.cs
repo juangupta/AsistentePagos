@@ -81,7 +81,7 @@ namespace AsistentePagos.Activities
         {
             avatarWebView = FindViewById<WebView>(Resource.Id.webView1);
             // expects to find the 'loading_icon_small.gif' file in the 'root' of the assets folder, compiled as AndroidAsset.
-            avatarWebView.LoadUrl(string.Format("file:///android_asset/avatar_mujer_grande_sin_fondo.gif"));
+            avatarWebView.LoadUrl(string.Format("file:///android_asset/avatar_hombre_grande_sin_fondo.gif"));
             // this makes it transparent so you can load it over a background
             avatarWebView.SetBackgroundColor(new Color(0, 0, 0, 0));
             avatarWebView.SetLayerType(LayerType.Software, null);
