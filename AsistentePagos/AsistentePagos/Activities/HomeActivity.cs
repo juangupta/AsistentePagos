@@ -49,7 +49,7 @@ namespace AsistentePagos.Activities
             InitComponents();
 
             // Cargamos el avatar
-            LoadAnimatedGif();
+            
 
             database = new SqLiteHelper();
             dbpath = System.IO.Path.Combine(
@@ -86,10 +86,12 @@ namespace AsistentePagos.Activities
             // this makes it transparent so you can load it over a background
             webview.SetBackgroundColor(new Color(0, 0, 0, 0));
             webview.SetLayerType(LayerType.Software, null);
+            
         }
 
         public void OnInit(OperationResult status)
         {
+            LoadAnimatedGif();
             //Verificamos que nuestra variable haya sido inicializada correctamente
             //Toast.MakeText(this, "OnInit", ToastLength.Long).Show();
             if (status.Equals(OperationResult.Success))
@@ -151,6 +153,11 @@ namespace AsistentePagos.Activities
 
         public void Listen()
         {
+            //while (tts.IsSpeaking)
+            //{
+            //    //TODO
+            //}
+
             isRecording = false;
             string rec = Android.Content.PM.PackageManager.FeatureMicrophone;
             if (rec != "android.hardware.microphone")

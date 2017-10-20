@@ -10,7 +10,7 @@
         android:minWidth="25dp"
         android:minHeight="25dp"
         android:layout_width="match_parent"
-        android:background="@drawable/blue_light_gradient"
+        android:background="#26407D"
         android:layout_height="wrap_content"
         android:id="@+id/linearLayoutHeader">
         <TextView
@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/textViewTitle"
-            android:textColor="#000000"
+            android:textColor="#FFFFFF"
             android:textAlignment="center"
             android:layout_gravity="center"
             android:layout_weight="0.9"
