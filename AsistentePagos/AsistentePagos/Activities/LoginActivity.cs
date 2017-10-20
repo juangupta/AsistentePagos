@@ -16,7 +16,7 @@ using AsistentePagos.Core.Utils;
 
 namespace AsistentePagos.Activities
 {
-    [Activity(Label = "LoginActivity", MainLauncher = true)]
+    [Activity(Label = "LoginActivity", MainLauncher = false)]
     public class LoginActivity : Activity
     {
         private EditText usernameInput, passwordInput;
@@ -30,7 +30,7 @@ namespace AsistentePagos.Activities
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.LoginUser);
+            SetContentView(Resource.Layout.LoginUser2);
             InitComponents();
             apiService = new ApiService();
 
