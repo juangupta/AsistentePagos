@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:minWidth="25dp"
+        android:minHeight="25dp"
+        android:layout_width="match_parent"
+        android:background="#26407D"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayoutHeader">
+        <TextView
+            android:text="Enrolamiento"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewTitle"
+            android:textColor="#FFFFFF"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:layout_weight="0.9"
+            android:textSize="19dp" />
+        <ImageView
+            android:layout_width="54dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="8dp"
+            android:layout_gravity="end"
+            android:id="@+id/logo_pagosapp"
+            android:src="@drawable/icono_aplicacion_azul"
+            android:layout_marginTop="0.0dp"
+            android:layout_weight="0.1" />
+    </LinearLayout>
+    <ImageView
+        android:src="@drawable/title_icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView1" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/usernameInput"
+        android:hint="Username"
+        android:textColor="#000000"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#26407D"
+        android:textColorHint="#26407D" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/passwordInput"
+        android:hint="Password"
+        android:backgroundTint="#26407D"
+        android:textColorHint="#26407D"
+        android:textColor="#26407D" />
+    <Button
+        android:id="@+id/BtnAceptar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Aceptar"
+        android:background="#26407D"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="50dp" />
+    <ImageView
+        android:src="@drawable/avatar_mujer"
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        android:id="@+id/imageView2"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp" />
+</LinearLayout>

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+
+  <style name="MainTheme.Base" parent="Theme.AppCompat.Light">
+  </style>
+
+  <style name="MainTheme" parent="MainTheme.Base">
+  </style>
+
+  <style name="Theme.Splash" parent="Theme.AppCompat.Light">
+    <item name="android:windowBackground">@drawable/icono_aplicacion_primera_pagina_blanco</item>
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:colorBackground">#FFFFFFFF</item>
+  </style>
+</resources>
