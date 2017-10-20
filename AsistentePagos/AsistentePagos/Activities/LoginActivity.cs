@@ -30,7 +30,7 @@ namespace AsistentePagos.Activities
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.LoginUser);
+            SetContentView(Resource.Layout.LoginUser2);
             InitComponents();
             apiService = new ApiService();
 
