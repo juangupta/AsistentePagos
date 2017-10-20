@@ -70,7 +70,6 @@
     <Compile Include="Activities\HomeActivity.cs" />
     <Compile Include="Activities\InvoiceListActivity.cs" />
     <Compile Include="Activities\LoginActivity.cs" />
-    <Compile Include="Activities\SplashActivity.cs" />
     <Compile Include="Adapter\AccountListAdapter.cs" />
     <Compile Include="Adapter\InvoiceListItemAdapter.cs" />
     <Compile Include="Activities\PaymentActivity.cs" />
@@ -156,12 +155,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\sin_fondo_mujer.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\values\styles.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\splash.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

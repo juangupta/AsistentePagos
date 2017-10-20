@@ -44,9 +44,7 @@ namespace AsistentePagos
         {
 
             string userName = Intent.GetStringExtra("userName");
-            Speak("Tu pago fue efectuado exitosamente");
-
-            Speak("Actualmente tienes un crédito pre aprobado, ¿estás interesado en adquirirlo?");
+            Speak("Tu pago fue efectuado exitosamente. Actualmente tienes un crédito pre aprobado, ¿estás interesado en adquirirlo?");
 
             //for (var i = 0; i < invoicesCount; i++)
             //{
