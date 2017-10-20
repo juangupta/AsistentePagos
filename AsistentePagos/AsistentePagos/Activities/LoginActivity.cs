@@ -30,13 +30,12 @@ namespace AsistentePagos.Activities
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.LoginUser2);
+            SetContentView(Resource.Layout.LoginUser);
             InitComponents();
             apiService = new ApiService();
 
             Button button = FindViewById<Button>(Resource.Id.BtnAceptar);
             button.Click += OnLogin;
-
 
             // Create your application here
         }

@@ -29,6 +29,7 @@ namespace AsistentePagos.Core.Utils
             try
             {
                 var db = new SQLiteAsyncConnection(path);
+                var queryResult = await db.QueryAsync<User>("DELETE FROM User");
                 int resultInsert = await db.InsertAsync(data);
                 if ( resultInsert != 0)
                     await db.UpdateAsync(data);

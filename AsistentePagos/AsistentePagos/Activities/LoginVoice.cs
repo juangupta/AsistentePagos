@@ -26,6 +26,7 @@ namespace AsistentePagos.Activities
             // Set our view from the "LoginVoice" layout resource
             SetContentView(Resource.Layout.LoginVoice);
             InitComponents();
+            ActionBar.Hide();
 
             // Cargamos el avatar
             LoadAnimatedGif();

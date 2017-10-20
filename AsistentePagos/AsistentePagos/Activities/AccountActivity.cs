@@ -27,6 +27,7 @@ namespace AsistentePagos.Activities
         GifImageView gif;
         ListView accountListView;
         WebView avatarWebView;
+        TextView title;
         ApiService apiService;
         Response response;
         TextToSpeech tts;
@@ -54,7 +55,7 @@ namespace AsistentePagos.Activities
         async void LoadUserAccount()
         {
             userDb = database.FindUser(dbpath);
-
+            title.Text = "Cuentas de " + userDb.Name;
             response = await apiService.Get<Account>("https://api.us.apiconnect.ibmcloud.com/",
                 "/playgroundbluemix-dev/hackathon/api/", "accounts", userDb.Username, userDb.PassUser);
             accountList = (List<Account>)response.Result;
@@ -68,6 +69,7 @@ namespace AsistentePagos.Activities
             apiService = new ApiService();
             accountListView = FindViewById<ListView>(Resource.Id.listViewAccounts);
             avatarWebView = FindViewById<WebView>(Resource.Id.webViewAvatar);
+            title = FindViewById<TextView>(Resource.Id.textViewTitle);
             database = new SqLiteHelper();
             dbpath = System.IO.Path.Combine(
             System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "ormdemo.db3");
@@ -77,7 +79,7 @@ namespace AsistentePagos.Activities
         void LoadAnimatedGif()
         {
             // expects to find the 'loading_icon_small.gif' file in the 'root' of the assets folder, compiled as AndroidAsset.
-            avatarWebView.LoadUrl(string.Format("file:///android_asset/merlin.webp"));
+            avatarWebView.LoadUrl(string.Format("file:///android_asset/sin_fondo_mujer.webp"));
             // this makes it transparent so you can load it over a background
             avatarWebView.SetBackgroundColor(new Color(0, 0, 0, 0));
             avatarWebView.SetLayerType(LayerType.Software, null);
