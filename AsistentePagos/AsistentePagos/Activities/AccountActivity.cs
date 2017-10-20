@@ -40,7 +40,7 @@ namespace AsistentePagos.Activities
             base.OnCreate(savedInstanceState);
 
             SetContentView(Resource.Layout.Accounts);
-
+            ActionBar.Hide();
             InitComponents();
 
             List<Account> accountList = new List<Account>()

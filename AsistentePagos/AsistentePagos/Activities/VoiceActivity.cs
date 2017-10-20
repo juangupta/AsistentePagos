@@ -18,7 +18,7 @@ using Android.Graphics;
 
 namespace AsistentePagos.Activities
 {
-    [Activity(Label = "VoiceActivity", MainLauncher = true)]
+    [Activity(Label = "VoiceActivity", MainLauncher = false)]
     public class VoiceActivity : Activity, TextToSpeech.IOnInitListener
 
     {
@@ -39,6 +39,7 @@ namespace AsistentePagos.Activities
             // Create your application here
 
             SetContentView(Resource.Layout.RecognitionVoice);
+            ActionBar.Hide();
             userName = Intent.GetStringExtra("userName");
             LoadAnimatedGif();
             InitSpeech(); 
@@ -74,7 +75,6 @@ namespace AsistentePagos.Activities
         void InitSpeech(){
             tts = new TextToSpeech(this, this);
 
-           
         }
 
         void LoadAnimatedGif()
@@ -121,8 +121,6 @@ namespace AsistentePagos.Activities
         public void Speech()
         {
             
-
-
             string[] speaks = {" ", "Hola"+userName+"para autenticar repite las siguientes oraciones", "La vaca en la torre es de color rojo"};
 
             for (var i = 0; i < speaks.Length; i++)
@@ -136,6 +134,7 @@ namespace AsistentePagos.Activities
 
         public void Listen(int VOICE)
         {
+            
             isRecording = false;
             string rec = Android.Content.PM.PackageManager.FeatureMicrophone;
             if (rec != "android.hardware.microphone")

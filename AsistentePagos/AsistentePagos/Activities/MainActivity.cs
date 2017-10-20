@@ -15,6 +15,7 @@ namespace AsistentePagos
 
             // Set our view from the "main" layout resource1
             SetContentView(Resource.Layout.Main);
+            ActionBar.Hide();
             string invoiceId = Intent.GetStringExtra("invoiceId");
             Toast.MakeText(this, invoiceId, ToastLength.Long).Show();
 
