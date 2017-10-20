@@ -60,6 +60,13 @@ namespace AsistentePagos.Activities
             {
                 Hablar();
             };
+
+            Button BtnModo = FindViewById<Button>(Resource.Id.BtnModo);
+            BtnModo.Click += delegate
+            {
+                Intent intent = new Intent(this, typeof(MasterActivity));
+                StartActivity(intent);
+            };
             // Empezamos a saludar al usuario
             Hablar();
         }
