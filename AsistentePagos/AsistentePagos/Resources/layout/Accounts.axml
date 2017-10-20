@@ -55,7 +55,7 @@
             android:dividerHeight="0.8dp" />
     </LinearLayout>
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:minWidth="25px"
         android:minHeight="25px"
         android:layout_width="match_parent"
@@ -66,13 +66,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/webViewAvatar"
-            android:layout_weight="0.8" />
+            android:layout_gravity="center"
+            android:layout_marginLeft="70dp" />
         <ImageView
             android:src="@drawable/microphone_icon"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:id="@+id/imageViewMicrophone"
-            android:layout_weight="0.2"
             android:layout_gravity="center" />
     </LinearLayout>
 </LinearLayout>

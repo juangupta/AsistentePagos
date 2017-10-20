@@ -15,7 +15,7 @@ using AsistentePagos.Core.Models;
 namespace AsistentePagos.Activities
 {
     [Activity(Theme = "@style/Theme.Splash", //Indicates the theme to use for this activity
-             MainLauncher = true, //Set it as boot activity
+             MainLauncher = false, //Set it as boot activity
              NoHistory = true)]
     public class SplashActivity : Activity
     {
